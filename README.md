@@ -2,8 +2,6 @@
 
 This module provides necessary services for running Bahmni
 
-## Build 
-
 ## Prerequisites
 
 - JDK 1.8
@@ -14,7 +12,7 @@ This module provides necessary services for running Bahmni
 ## Build Instructions
 
 ```bash
-git clone https://github.com/Rijan9860/BahmniCore-0.92.git
+git clone https://github.com/Rijan9860/bahmni-core-release-0.92.git
 cd bahmni-core
 mvn clean install -DskipTests
 ```
