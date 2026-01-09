@@ -169,17 +169,26 @@ public class BahmniDiagnosisServiceImpl implements BahmniDiagnosisService {
 
     public List<BahmniDiagnosisRequest> getBahmniDiagnosisByPatientAndDate(String patientUuid, String date) throws ParseException {
         Patient patient = patientService.getPatientByUuid(patientUuid);
-
+        
         Date fromDate = date != null ? new SimpleDateFormat("yyyy-MM-dd").parse(date) : null;
         List<Diagnosis> diagnosisByPatientAndDate = diagnosisService.getDiagnoses(patient, fromDate);
 
         List<BahmniDiagnosisRequest> bahmniDiagnosisRequests = new ArrayList<>();
         boolean diagnosisSchemaContainsStatus = bahmniDiagnosisMetadata.diagnosisSchemaContainsStatus();
 
+        final int LIMIT = 30;
+
         for (Diagnosis diagnosis : diagnosisByPatientAndDate) {
+
+            if (bahmniDiagnosisRequests.size() >= LIMIT) {
+                break; 
+            }
+
             EncounterTransaction.Diagnosis etDiagnosis = diagnosisMapper.convert(diagnosis);
+
             BahmniDiagnosisRequest bahmniDiagnosisRequest = bahmniDiagnosisMetadata.mapBahmniDiagnosis(etDiagnosis,
-                    null, true, false, diagnosisSchemaContainsStatus,false);
+                null, true, false, diagnosisSchemaContainsStatus,false
+            );
 
             if (bahmniDiagnosisRequest != null) {
                 bahmniDiagnosisRequests.add(bahmniDiagnosisRequest);
